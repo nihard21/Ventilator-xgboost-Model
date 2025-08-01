@@ -23,10 +23,9 @@ train['u_in_u_out']=train['u_in']*train['u_out']
 train['R_C']=train['R'].astype(str)+"_"+train['C'].astype(str)
 train['R_C']=pd.factorize(train['R_C'])[0]
 
-#Cleaning up dataset, removing all values of u_out!=0
-train=train[train['u_out'] == 0]
+#Identifying inputs and outputs for model
 target=['pressure']
-exclude=['id', 'pressure', 'breath_id', 'time_step']
+exclude=['id', 'pressure']
 feature=[col for col in train.columns if col not in exclude]
 x=train[feature]
 y=train[target]
@@ -76,12 +75,4 @@ plt.hist((y_test.values.flatten()-test_pressure_pred.flatten())**2, bins=100, co
 plt.xlabel("MSE")
 plt.ylabel("Frequency")
 plt.title("Histogram of MSEs (Excluding Top 5%)")
-
 plt.show()
-
-
-#Next steps
-#pressure vs time actual vs predicted for different breaths, show breaths where prediction is good and bad
-#mse histogram
-#put code on github
-#report should be in readme, add images of screenshots

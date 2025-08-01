@@ -26,4 +26,9 @@ Results (MSEs):
 -Model 4 (Final): 0.7577091890221975
 
 Visualizations:
+-Check "screenshots" folder in repository
+
+-"overall prediction based off primary input": visualization of pressure based off u_in, the primary control value
+-"error distribution": visualization of error distribution for each breath
+-"high low mse examples": left graph is an example of an accurate breath (error=0.0104), right graph is example of an inaccurate breath (error=193.4240)
 

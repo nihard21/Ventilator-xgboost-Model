@@ -1,8 +1,0 @@
-id=row index
-breath_id=breath index
-R=change in pressure based on air flow (airway resistance)
-C=change in volume based on pressure (lung compliance)
-time_step=actual time from start of breath
-u_in=percentage of opening of valve for incoming breath
-u_out=boolean indicating whether outgoing breath valve is open or closed
-pressure=airway pressure

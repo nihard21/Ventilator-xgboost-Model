@@ -1,34 +1,46 @@
-This project is based off the problem statement of a completed Kaggle competition, the original prompt can be found here: https://www.kaggle.com/competitions/ventilator-pressure-prediction/overview
+# Ventilator XGBoost Model 
 
-***Used only the train dataset, as the test dataset does not have pressure values
+This project is based off the problem statement of a 2021 Kaggle competition run by Google Brain, the original prompt can be found here: <https://www.kaggle.com/competitions/ventilator-pressure-prediction/overview>
 
-Intial Steps:
--Read the problem prompt and identified goal, which was to predict ventilator pressure based off previous data
--Wrote simple notes about each variable to quickly identify their function (documented in "notes")
+### Background
 
-Using linear regression for intial observations:
--Began programming, graphed pressures based off u_in for singular breaths to understand patterns
--Used scikit-learn linear regression functions for basic models/predictions
+Predicting ventilator pressure from sensor data is an important step toward improving how mechanical ventilators are controlled. Ventilators help patients breathe by pumping oxygen into their lungs through a tube in the windpipe, but managing them requires constant attention from clinicians. Developing models that can predict and adjust pressure automatically could reduce difficulty and make treatments more accessible. The datasets used in this challenge come from a simulation where a modified open-source ventilator was connected to an artificial bellows test lung, and was used to simulate over 125,000 unique breaths. Participants were expected to use the data recorded from the sensors to create a model which accurately predicts ventilator pressure. My personal project uses only the training dataset from the Kaggle challenge, ignoring the testing data due to the absence of pressure values. 
 
-Using xgboost for improved model accuracy:
--Chose to use xgboost for increased accuracy, linear regression consistently returned errors>100
--Intially tested with half of the dataset for train and other half for test
--Started off with a basic xgboost model (Model 1), which used all variables except 'id', 'pressure', 'breath_id', and 'time_step' as model inputs
--Added multiple features for improved model accuracy (Model 2)
--Removed top 5% of MSEs to account for outliers and further decrease error (Model 3)
--Final model (Model 4), chose to include 'breath_id' and 'time_step' in inputs, used random train/test splits with 70% for train, 30% for test
+### Variables 
 
-Results (MSEs):
--Linear Regression: >100
--Model 1: 32.066039083385554
--Model 2: 4.20245476933641
--Model 3: 1.3253897842206432
--Model 4 (Final): 0.7577091890221975
+These are my following notes about each of the variables found in the datasets, simplified for quick understanding:
 
-Visualizations:
--Check "screenshots" folder in repository
+* id=row index
+* breath_id=breath index
+* R=change in pressure based on air flow (airway resistance)
+* C=change in volume based on pressure (lung compliance)
+* time_step=time from start of breath
+* u_in=percentage of opening of inspiratory solenoid valve for incoming breath
+* u_out=boolean indicating whether expiratory valve is open or closed
+* pressure=airway pressure
 
--"overall prediction based off primary input": visualization of pressure based off u_in, the primary control value
--"error distribution": visualization of error distribution for each breath
--"high low mse examples": left graph is an example of an accurate breath (error=0.0104), right graph is example of an inaccurate breath (error=193.4240)
+### Working Process
 
+I began by conducting an exploratory analysis, understanding the function of each variable and visualizing the relationship between one of the controls, u_in, and pressure across individual breaths to identify patterns.
+​Initially, I used linear regression from scikit-learn, which established basic understanding, but produced mean squared errors (MSE) consistently exceeding 100. Using multiple linear regression did not significantly reduce MSE, requiring a more powerful model for increased accuracy. To improve model performance, I switched to XGBoost. The first model excluded non-predictive identifiers such as id, breath_id, pressure, and time_step, already significantly reducing MSE. The next iteration incorporated feature engineering to account for dynamic relationships, reducing the MSE even further. Outlier removal of the top 5% of errors further decreased the MSE. Finally, the inclusion of all available features, combined with a randomized 70/30 train-test split, resulted in my final model, with the lowest MSE yet. The results demonstrate a progression from simple linear models to a highly accurate gradient-boosted approach, showing the effective of model refinement in solving complex regression tasks.
+
+### Results
+
+| Model        | Result (MSE)  |
+| ------------- |:-------------:|
+| Scikit Learn (linear regression)    |  >100 |
+| XGBoost (excluding non-predictive identifiers)      | 32.066039083385554     |
+| XGBoost (incorporated feature engineering) | 4.20245476933641      |
+| XGBoost (outlier removal) | 1.3253897842206432     |
+| XGBoost (inclusion of all available features) | 0.7577091890221975      |
+
+### Visualizations
+
+##### Example of accurate and inaccurate breath (MSE is 0.0104 and 193.4240 respectively)
+![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/e3eeb6cb-4569-458a-abc1-c30a1cd0b329" />)
+
+##### Visualization of pressure based off u_in, the primary control value
+![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/712f55a2-5b2c-4376-820d-f22de038443d" />)
+
+##### Visualization of MSE distrubution for individual breaths
+![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/17dc57e7-ec68-41f7-9e18-817f764e9ac5" />)

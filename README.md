@@ -37,10 +37,10 @@ I began by conducting an exploratory analysis, understanding the function of eac
 ### Visualizations
 
 ##### Example of accurate and inaccurate breath (MSE is 0.0104 and 193.4240 respectively)
-![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/e3eeb6cb-4569-458a-abc1-c30a1cd0b329" />)
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/visualizations/high%20low%20mse%20examples.png?raw=true)
 
 ##### Visualization of pressure based off u_in, the primary control value
-![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/712f55a2-5b2c-4376-820d-f22de038443d" />)
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/visualizations/overall%20prediction%20based%20off%20primary%20input.png?raw=true)
 
 ##### Visualization of MSE distrubution for individual breaths
-![alt text](<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/17dc57e7-ec68-41f7-9e18-817f764e9ac5" />)
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/visualizations/error%20distrubution.png?raw=true)

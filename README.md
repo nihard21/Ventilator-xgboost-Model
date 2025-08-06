@@ -1,10 +1,10 @@
-# Ventilator xgboost Model 
+# Ventilator XGBoost Model 
 
 This project is based off the problem statement of a 2021 Kaggle competition run by Google Brain, the original prompt can be found here: <https://www.kaggle.com/competitions/ventilator-pressure-prediction/overview>
 
 ## Background
 
-Predicting ventilator pressure from sensor data is an important step toward improving how mechanical ventilators are controlled. Ventilators help patients breathe by pumping oxygen into their lungs through a tube in the windpipe, but managing them requires constant attention from clinicians. Developing models that can predict and adjust pressure automatically could reduce difficulty and make treatments more accessible. The datasets used in this challenge come from an accurate simulation, where a modified open-source ventilator was connected to an artificial bellows test lung. My personal project uses only the training dataset from the Kaggle challenge, ignoring the testing data due to the absence of pressure values. 
+Predicting ventilator pressure from sensor data is an important step toward improving how mechanical ventilators are controlled. Ventilators help patients breathe by pumping oxygen into their lungs through a tube in the windpipe, but managing them requires constant attention from clinicians. Developing models that can predict and adjust pressure automatically could reduce difficulty and make treatments more accessible. The datasets used in this challenge come from a simulation where a modified open-source ventilator was connected to an artificial bellows test lung, and was used to simulate over 125,000 unique breaths. Participants were expected to use the data recorded from the sensors to create a model which accurately predicts ventilator pressure. My personal project uses only the training dataset from the Kaggle challenge, ignoring the testing data due to the absence of pressure values. 
 
 ## Variables 
 
@@ -19,11 +19,20 @@ These are my following notes about each of the variables found in the datasets, 
 * u_out=boolean indicating whether expiratory valve is open or closed
 * pressure=airway pressure
 
+## Working Process
 
 I began by conducting an exploratory analysis, understanding the function of each variable and visualizing the relationship between one of the controls, u_in, and pressure across individual breaths to identify patterns.
-​Initially, I used linear regression from scikit-learn, which established basic understanding, but produced mean squared errors (MSE) consistently exceeding 100, requiring a more powerful model for increased accuracy.
+​Initially, I used linear regression from scikit-learn, which established basic understanding, but produced mean squared errors (MSE) consistently exceeding 100. Using multiple linear regression did not significantly reduce MSE, requiring a more powerful model for increased accuracy. To improve model performance, I switched to XGBoost. The first model excluded non-predictive identifiers such as id, breath_id, pressure, and time_step, already significantly reducing MSE. The next iteration incorporated feature engineering to account for dynamic relationships, reducing the MSE even further. Outlier removal of the top 5% of errors further decreased the MSE. Finally, the inclusion of all available features, combined with a randomized 70/30 train-test split, resulted in my final model, with the lowest MSE yet. The results demonstrate a progression from simple linear models to a highly accurate gradient-boosted approach, showing the effective of model refinement in solving complex regression tasks.
 
-To improve predictive performance, we adopted XGBoost, progressively refining the model through four stages. The first model excluded non-predictive identifiers such as id, breath_id, pressure, and time_step, achieving an MSE of 32.07. Subsequent iterations incorporated feature engineering (Model 2) to capture dynamic relationships, reducing the MSE to 4.20. Outlier removal targeting the top 5% of errors (Model 3) further decreased the MSE to 1.33. Finally, the inclusion of all available features, including breath_id and time_step, combined with a randomized 70/30 train-test split, yielded the final model (Model 4) with an MSE of 0.76. These results demonstrate a clear progression from simple linear models to a highly accurate gradient-boosted approach, illustrating the effectiveness of iterative model refinement in solving complex time-dependent regression tasks.
+## Results
+
+| Model        | Result (MSE)  |
+| ------------- |:-------------:|
+| Linear Regression (scikit-learn)    |  >100 |
+| XGBoost (excluding non-predictive identifiers)      | 32.066039083385554     |
+| XGBoost (incorporated feature engineering) | 4.20245476933641      |
+| XGBoost (outlier removal) | 1.3253897842206432     |
+| XGBoost (inclusion of all available features) | 0.7577091890221975      |
 
 Results (MSEs):
 -Linear Regression: >100

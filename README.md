@@ -2,11 +2,11 @@
 
 This project is based off the problem statement of a 2021 Kaggle competition run by Google Brain, the original prompt can be found here: <https://www.kaggle.com/competitions/ventilator-pressure-prediction/overview>
 
-## Background
+### Background
 
 Predicting ventilator pressure from sensor data is an important step toward improving how mechanical ventilators are controlled. Ventilators help patients breathe by pumping oxygen into their lungs through a tube in the windpipe, but managing them requires constant attention from clinicians. Developing models that can predict and adjust pressure automatically could reduce difficulty and make treatments more accessible. The datasets used in this challenge come from a simulation where a modified open-source ventilator was connected to an artificial bellows test lung, and was used to simulate over 125,000 unique breaths. Participants were expected to use the data recorded from the sensors to create a model which accurately predicts ventilator pressure. My personal project uses only the training dataset from the Kaggle challenge, ignoring the testing data due to the absence of pressure values. 
 
-## Variables 
+### Variables 
 
 These are my following notes about each of the variables found in the datasets, simplified for quick understanding:
 
@@ -19,12 +19,12 @@ These are my following notes about each of the variables found in the datasets, 
 * u_out=boolean indicating whether expiratory valve is open or closed
 * pressure=airway pressure
 
-## Working Process
+### Working Process
 
 I began by conducting an exploratory analysis, understanding the function of each variable and visualizing the relationship between one of the controls, u_in, and pressure across individual breaths to identify patterns.
 ​Initially, I used linear regression from scikit-learn, which established basic understanding, but produced mean squared errors (MSE) consistently exceeding 100. Using multiple linear regression did not significantly reduce MSE, requiring a more powerful model for increased accuracy. To improve model performance, I switched to XGBoost. The first model excluded non-predictive identifiers such as id, breath_id, pressure, and time_step, already significantly reducing MSE. The next iteration incorporated feature engineering to account for dynamic relationships, reducing the MSE even further. Outlier removal of the top 5% of errors further decreased the MSE. Finally, the inclusion of all available features, combined with a randomized 70/30 train-test split, resulted in my final model, with the lowest MSE yet. The results demonstrate a progression from simple linear models to a highly accurate gradient-boosted approach, showing the effective of model refinement in solving complex regression tasks.
 
-## Results
+### Results
 
 | Model        | Result (MSE)  |
 | ------------- |:-------------:|
@@ -34,17 +34,13 @@ I began by conducting an exploratory analysis, understanding the function of eac
 | XGBoost (outlier removal) | 1.3253897842206432     |
 | XGBoost (inclusion of all available features) | 0.7577091890221975      |
 
-Results (MSEs):
--Linear Regression: >100
--Model 1: 32.066039083385554
--Model 2: 4.20245476933641
--Model 3: 1.3253897842206432
--Model 4 (Final): 0.7577091890221975
+### Visualizations
 
-Visualizations:
--Check "screenshots" folder in repository
+##### Example of accurate and inaccurate breath (MSE is 0.0104 and 193.4240 respectively)
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/screenshots/high%20low%20mse%20examples.png?raw=true)
 
--"overall prediction based off primary input": visualization of pressure based off u_in, the primary control value
--"error distribution": visualization of error distribution for each breath
--"high low mse examples": left graph is an example of an accurate breath (error=0.0104), right graph is example of an inaccurate breath (error=193.4240)
+##### Visualization of pressure based off u_in, the primary control value
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/screenshots/overall%20prediction%20based%20off%20primary%20input.png?raw=true)
 
+##### Visualization of MSE distrubution for individual breaths
+![alt text](https://github.com/nihard21/Ventilator-xgboost-Model/blob/main/screenshots/error%20distrubution.png?raw=true)

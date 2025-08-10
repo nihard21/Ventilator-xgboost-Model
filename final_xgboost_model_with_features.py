@@ -7,7 +7,9 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 #Reading train.csv dataset into dataframe
-train=pd.read_csv('/Users/nihar/Desktop/Ventilator Model Tools/ventilator-pressure-prediction/train.csv')
+#Download train.csv from the link found in README.md and replace file_path with your path
+file_path='/Users/nihar/Desktop/Ventilator Model Tools/ventilator-pressure-prediction/train.csv'
+train=pd.read_csv(file_path)
 
 #Feature engineering for improved model accuracy
 train['u_in_cumsum']=train.groupby('breath_id')['u_in'].cumsum()
